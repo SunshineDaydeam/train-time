@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Page Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!--link rel="stylesheet" type="text/css" media="screen" href="main.css" /-->
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/momentjs/2.12.0/moment.min.js"></script>
+    <!-- <link rel="stylesheet" type="text/css" href="assets/css/reset.css"> -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
+    <!-- <link rel="stylesheet" type="text/css" href="assets/css/mobile.css"> -->
+    <link href="https://fonts.googleapis.com/css?family=Pangolin" rel="stylesheet">
+    
+    <style>
+        .pangolin{font-family: 'Pangolin', cursive;}
+    </style>
+</head>
+<body class="bg-dark pangolin">
+<div class="container">
+    <div class="jumbotron p-4 mt-3 mb-3">
+        <h1 class="pangolin text-center text-info">Train Schedule</h1>
+        <h6 id="clock"></h6>
+        <div class="card bg-light mb-3">
+            <h4 class="text-center pt-1 pb-1 bg-info rounded-top text-white">Train Times</h4>
+            <table class="m-3" id="trainDisplay">
+                <tr class="border-bottom">
+                    <th>Train Name</th>
+                    <th>Destination</th>
+                    <th>Frequency</th>
+                    <th>Next Arrival</th>
+                    <th>Minutes Away</th>
+                </tr>
+            </table>        
+        </div>
+        <div class="card">
+            <h4 class="text-center pt-1 pb-1 bg-info rounded-top text-white">Add a Train</h4>
+            <div class="card  m-3 p-3">
+                <p class="mb-0 pangolin">Train Name</p>
+                <input class="mb-1" type="text" id ="nameInput" placeholder=" enter train name...">
+                <p class="mb-0 pangolin">Destination</p>
+                <input class="mb-1" type="text" id ="destinationInput" placeholder=" enter train destination...">
+                <p class="mb-0 pangolin">First Train of the Day</p>
+                <input class="mb-1" type="text" id ="firstTimeInput" placeholder=" enter first train...">
+                <p class="mb-0 pangolin">Train Frequency</p>
+                <input class="mb-3" type="text" id ="frequencyInput" placeholder=" enter train frequency...">
+                <button class="btn btn-success p-2" id="submitBtn">Submit</button>
+            </div>  
+        </div>
+    </div>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/5.0.2/firebase.js"></script>
+    <script src="assets/java/java.js"></script>
+</body>
+</html>
