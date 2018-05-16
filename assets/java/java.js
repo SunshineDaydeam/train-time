@@ -18,26 +18,32 @@ var trainFrequency = "";
 
 
 //Submit Button - push info to firebase
-$("#submitBtn").on("click", function(event){
-    trainName = $("#nameInput").val().trim();
-    trainDestination = $("#destinationInput").val().trim();
-    trainFirst = $("#firstTimeInput").val().trim();
-    trainFrequency = $("#frequencyInput").val().trim();
 
-    $("#nameInput").val("");
-    $("#destinationInput").val("");
-    $("#firstTimeInput").val("");
-    $("#frequencyInput").val("");
 
-    var newTrain = {
-        trainName: trainName,
-        trainDestination: trainDestination,
-        trainFirst:trainFirst,
-        trainFrequency: trainFrequency
+    $("#submitBtn").on("click", function(event){
+        if ($("#nameInput").val().trim() != "" && $("#destinationInput").val().trim() != "" && $("#frequencyInput").val() <=1440) {
+        trainName = $("#nameInput").val().trim();
+        trainDestination = $("#destinationInput").val().trim();
+        trainFirst = $("#firstTimeInput").val().trim();
+        trainFrequency = $("#frequencyInput").val().trim();
+
+        $("#nameInput").val("");
+        $("#destinationInput").val("");
+        $("#firstTimeInput").val("");
+        $("#frequencyInput").val("");
+
+        var newTrain = {
+            trainName: trainName,
+            trainDestination: trainDestination,
+            trainFirst:trainFirst,
+            trainFrequency: trainFrequency
+        };
+
+        database.ref().push(newTrain);
     };
-
-    database.ref().push(newTrain);
 });
+
+
 //Update Train Displays
 database.ref().on("child_added", function(childSnapshot, prevChildKey) {
     //Create Variables of names
