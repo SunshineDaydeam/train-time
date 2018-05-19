@@ -15,7 +15,9 @@ var trainName = "";
 var trainDestination = "";
 var trainFirst = "";
 var trainFrequency = "";
-var trainDisplayArray=[];                                           
+var trainDisplayArray=[];     
+
+$("#clock").text(moment().format("MMMM Do YYYY, h:mm a"));
 
 //Submit Button Click Handler
 $("#submitBtn").on("click", function(event){
@@ -32,7 +34,7 @@ $("#submitBtn").on("click", function(event){
         trainFrequency = $("#frequencyInput").val().trim();     //assign frequency variable
 
         $("#nameInput").val("");                                //clear input boxes
-    $("#destinationInput").val("");                             //clear input boxes
+        $("#destinationInput").val("");                         //clear input boxes
         $("#firstTimeInput").val("");                           //clear input boxes
         $("#frequencyInput").val("");                           //clear input boxes
 
@@ -66,16 +68,7 @@ database.ref().on("child_added", function(childSnapshot, prevChildKey) {
     var displayNextTrainMinutes=(trainInfoFreq-(diffTime%trainInfoFreq));       //calculate number of minutes til next train
     var displayNextTrainTime=moment().add(displayNextTrainMinutes, 'minutes');  //calculate the next train time
 
-    // //push info from trains to an object
-    // var trainInfoNameDisplay = {
-    //     "name": trainInfoName, 
-    //     "destination": trainInfoDest, 
-    //     "firstTrain": trainInfoStart, 
-    //     "trainMinutes": trainInfoFreq};
-    // //push those objects to trainDisplayArray
-    // trainDisplayArray.push(trainInfoNameDisplay);
 
-    
     //Display to Screen//
 
     //tablerow
@@ -97,15 +90,56 @@ database.ref().on("child_added", function(childSnapshot, prevChildKey) {
         td4.addClass("text-muted nextTrain");
         td4.attr("start", trainInfoStart);
         td4.attr("freq", trainInfoFreq);
-        td4.text(moment(displayNextTrainTime).format('hh:mm'));
+                
     //Minutes til next train
     var td5 = $("<td>");
         td5.addClass("text-muted minutes");
         td4.attr("start", trainInfoStart);
         td4.attr("freq", trainInfoFreq);
-        td5.text(displayNextTrainMinutes);
+        
+
+        if (diffTime >=0){
+            td4.text(displayNextTrainTime.format("hh:mm"));
+            td5.text(displayNextTrainMinutes);
+        }
+        else{
+            td4.text(firstTimeConverted.format("hh:mm"));
+            td5.text(diffTime*-1);
+            
+        }
 
         //display to html
-        tr.append(td1, td2, td3, td4, td5);                     //append all to tr div
-        $("#trainDisplay").append(tr);                          //Display on Screen
+        tr.append(td1, td2, td3, td4, td5);                                         //append all to tr div
+        $("#trainDisplay").append(tr);                                              //Display on Screen
+
 });
+
+//Update timer every 10 seconds
+var timer = setInterval(function(){
+    //for every instance of next train class
+    for (i=0; i<$(".nextTrain").length; i++){
+        var ntFreq = $(".nextTrain")[i].getAttribute("freq");                       //define frequency attribute
+        var ntStart = $(".nextTrain")[i].getAttribute("start");                     //define start time attribute
+            //Calculate Times
+        var firstTimeConverted = moment(ntStart, "hh:mm");                          //convert start time to hours and minutes              
+        var currentTime = moment();                                                 //define current time
+        var diffTime = moment().diff(moment(firstTimeConverted), "minutes");        //calculate number of minutes between first time and current time
+        var displayNextTrainMinutes=(ntFreq-(diffTime%ntFreq));                     //calculate number of minutes til next train
+        var displayNextTrainTime=moment().add(displayNextTrainMinutes, 'minutes');  //calculate the next train time
+
+        //if first train has already started
+        if (diffTime >=0){
+            $(".nextTrain")[i].textContent = displayNextTrainTime.format("hh:mm");  //update next train time
+            $(".minutes")[i].textContent = displayNextTrainMinutes;                 //update minutes til next train
+        }
+        //if first train hasn't already started
+        else{
+            $(".nextTrain")[i].textContent = ntStart;                               //display the first train time
+            $(".minutes")[i].textContent = diffTime*-1;                             //display minutes til the first train time
+        }
+        $("#clock").text(moment().format("MMMM Do YYYY, h:mm a"));
+    };
+    console.log(i)
+}, 10000);
+
+
